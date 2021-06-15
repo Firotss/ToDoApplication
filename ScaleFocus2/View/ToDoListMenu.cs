@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScaleFocus2.Contoller;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace ScaleFocus2.View
     {
         string user_id;
         string[] list_info;
+        IController controller;
         public ToDoListMenu(string user_id, string[] id)
         {
             InitializeComponent();
@@ -25,33 +27,46 @@ namespace ScaleFocus2.View
         int choice = 0;
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if(user_id == list_info[3])
+            this.controller = new ControllerClass();
+
+            if (user_id == list_info[3])
             {
-                //добавить что то вроде 'удалить все записи где айди создателя равняется чичашнему айди,
-                //а чичашнее айди поста равняется первому айди'
+                controller.RemoveAllLists(list_info[7]);
             }
             else
             {
-                //удалить один пост где айди юзера равняется с этим юзером, а первое айди равняется чичашнему
+                controller.RemoveOneList(list_info[7], user_id);
             }
+            
             this.Close();
         }
 
         private void enterBtn_Click(object sender, EventArgs e)
         {
+            this.controller = new ControllerClass();
+
             if(choice == 1)
             {
-                //добавляет запись с такими же данными за исключением одного - юзер айди должен быть тот который мы написали
+                controller.shareList(list_info[7], tbx.Text);
             }
             else if(choice == 2)
             {
-                //меняет залавие у всех таблиц с лист айди как у этого и с таким же заглавием, или если айди создателя и айди юзера разные, то меняет только название с этим юзер айди
+                if (user_id == list_info[3])
+                {
+                    controller.ChangeAllLists(list_info[7], tbx.Text);
+                }
+                else
+                {
+                    controller.ChangeOneList(list_info[7], tbx.Text, user_id);
+                }
+                titlelbl.Text = tbx.Text;
             }
 
             choice = 0;
 
             enterBtn.Enabled = false;
             tbx.Enabled = false;
+            tbx.Text = "";
             lbl.Text = "";
         }
 
@@ -69,6 +84,7 @@ namespace ScaleFocus2.View
             enterBtn.Enabled = true;
             tbx.Enabled = true;
             lbl.Text = "Edit with title:";
+            tbx.Text = titlelbl.Text;
         }
     }
 }

@@ -23,5 +23,13 @@ namespace ScaleFocus2.View
         void addList(string title, string id);
 
         string[] OneUser(string username);
+
+        void shareList(string listId, string userId);
+
+        void RemoveAllLists(string listId);
+        void RemoveOneList(string listId, string userId);
+        void ChangeOneList(string listId, string title, string userId);
+        void ChangeAllLists(string listId, string title);
+
     }
 }

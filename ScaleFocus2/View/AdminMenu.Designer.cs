@@ -41,9 +41,6 @@ namespace ScaleFocus2.View
             this.idTxb = new System.Windows.Forms.TextBox();
             this.EnterBtn = new System.Windows.Forms.Button();
             this.dataGridOfUsers = new System.Windows.Forms.DataGridView();
-            this.DeleteBtn = new System.Windows.Forms.Button();
-            this.editBtn = new System.Windows.Forms.Button();
-            this.createBtn = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.password = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +50,9 @@ namespace ScaleFocus2.View
             this.id_of_creator = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.date_of_last_change = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.last_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeleteBtn = new System.Windows.Forms.Button();
+            this.editBtn = new System.Windows.Forms.Button();
+            this.createBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridOfUsers)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,6 +95,7 @@ namespace ScaleFocus2.View
             // usernameTxb
             // 
             this.usernameTxb.Location = new System.Drawing.Point(208, 61);
+            this.usernameTxb.MaxLength = 14;
             this.usernameTxb.Name = "usernameTxb";
             this.usernameTxb.Size = new System.Drawing.Size(100, 20);
             this.usernameTxb.TabIndex = 25;
@@ -102,6 +103,7 @@ namespace ScaleFocus2.View
             // PasswordTxb
             // 
             this.PasswordTxb.Location = new System.Drawing.Point(208, 87);
+            this.PasswordTxb.MaxLength = 50;
             this.PasswordTxb.Name = "PasswordTxb";
             this.PasswordTxb.Size = new System.Drawing.Size(100, 20);
             this.PasswordTxb.TabIndex = 24;
@@ -109,6 +111,7 @@ namespace ScaleFocus2.View
             // lastnameTxb
             // 
             this.lastnameTxb.Location = new System.Drawing.Point(401, 87);
+            this.lastnameTxb.MaxLength = 50;
             this.lastnameTxb.Name = "lastnameTxb";
             this.lastnameTxb.Size = new System.Drawing.Size(100, 20);
             this.lastnameTxb.TabIndex = 23;
@@ -125,6 +128,7 @@ namespace ScaleFocus2.View
             // firstnameTxb
             // 
             this.firstnameTxb.Location = new System.Drawing.Point(401, 61);
+            this.firstnameTxb.MaxLength = 50;
             this.firstnameTxb.Name = "firstnameTxb";
             this.firstnameTxb.Size = new System.Drawing.Size(100, 20);
             this.firstnameTxb.TabIndex = 21;
@@ -167,45 +171,17 @@ namespace ScaleFocus2.View
             this.dataGridOfUsers.Size = new System.Drawing.Size(570, 246);
             this.dataGridOfUsers.TabIndex = 18;
             // 
-            // DeleteBtn
-            // 
-            this.DeleteBtn.Location = new System.Drawing.Point(12, 87);
-            this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(120, 32);
-            this.DeleteBtn.TabIndex = 17;
-            this.DeleteBtn.Text = "DELETE USER";
-            this.DeleteBtn.UseVisualStyleBackColor = true;
-            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
-            // 
-            // editBtn
-            // 
-            this.editBtn.Location = new System.Drawing.Point(12, 49);
-            this.editBtn.Name = "editBtn";
-            this.editBtn.Size = new System.Drawing.Size(120, 32);
-            this.editBtn.TabIndex = 16;
-            this.editBtn.Text = "EDIT USER";
-            this.editBtn.UseVisualStyleBackColor = true;
-            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
-            // 
-            // createBtn
-            // 
-            this.createBtn.Location = new System.Drawing.Point(12, 11);
-            this.createBtn.Name = "createBtn";
-            this.createBtn.Size = new System.Drawing.Size(120, 32);
-            this.createBtn.TabIndex = 15;
-            this.createBtn.Text = "CREATE USER";
-            this.createBtn.UseVisualStyleBackColor = true;
-            this.createBtn.Click += new System.EventHandler(this.createBtn_Click);
-            // 
             // id
             // 
             this.id.HeaderText = "id";
             this.id.Name = "id";
+            this.id.ReadOnly = true;
             // 
             // username
             // 
             this.username.HeaderText = "username";
             this.username.Name = "username";
+            this.username.ReadOnly = true;
             // 
             // password
             // 
@@ -248,6 +224,36 @@ namespace ScaleFocus2.View
             this.last_id.HeaderText = "last_id";
             this.last_id.Name = "last_id";
             this.last_id.ReadOnly = true;
+            // 
+            // DeleteBtn
+            // 
+            this.DeleteBtn.Location = new System.Drawing.Point(12, 87);
+            this.DeleteBtn.Name = "DeleteBtn";
+            this.DeleteBtn.Size = new System.Drawing.Size(120, 32);
+            this.DeleteBtn.TabIndex = 17;
+            this.DeleteBtn.Text = "DELETE USER";
+            this.DeleteBtn.UseVisualStyleBackColor = true;
+            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
+            // 
+            // editBtn
+            // 
+            this.editBtn.Location = new System.Drawing.Point(12, 49);
+            this.editBtn.Name = "editBtn";
+            this.editBtn.Size = new System.Drawing.Size(120, 32);
+            this.editBtn.TabIndex = 16;
+            this.editBtn.Text = "EDIT USER";
+            this.editBtn.UseVisualStyleBackColor = true;
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
+            // 
+            // createBtn
+            // 
+            this.createBtn.Location = new System.Drawing.Point(12, 11);
+            this.createBtn.Name = "createBtn";
+            this.createBtn.Size = new System.Drawing.Size(120, 32);
+            this.createBtn.TabIndex = 15;
+            this.createBtn.Text = "CREATE USER";
+            this.createBtn.UseVisualStyleBackColor = true;
+            this.createBtn.Click += new System.EventHandler(this.createBtn_Click);
             // 
             // AdminMenu
             // 

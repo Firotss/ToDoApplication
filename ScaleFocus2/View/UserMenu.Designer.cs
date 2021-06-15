@@ -29,10 +29,12 @@ namespace ScaleFocus2.View
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.createBtn = new System.Windows.Forms.Button();
             this.titleTbx = new System.Windows.Forms.TextBox();
             this.ToDoListsPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.CheckTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // createBtn
@@ -48,6 +50,7 @@ namespace ScaleFocus2.View
             // titleTbx
             // 
             this.titleTbx.Location = new System.Drawing.Point(60, 7);
+            this.titleTbx.MaxLength = 12;
             this.titleTbx.Name = "titleTbx";
             this.titleTbx.Size = new System.Drawing.Size(84, 20);
             this.titleTbx.TabIndex = 2;
@@ -68,6 +71,12 @@ namespace ScaleFocus2.View
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "List title:";
+            // 
+            // CheckTimer
+            // 
+            this.CheckTimer.Enabled = true;
+            this.CheckTimer.Interval = 1000;
+            this.CheckTimer.Tick += new System.EventHandler(this.CheckTimer_Tick);
             // 
             // UserMenu
             // 
@@ -93,5 +102,6 @@ namespace ScaleFocus2.View
         private System.Windows.Forms.TextBox titleTbx;
         private System.Windows.Forms.Panel ToDoListsPanel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer CheckTimer;
     }
 }

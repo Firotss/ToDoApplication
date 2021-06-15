@@ -45,7 +45,6 @@ namespace ScaleFocus2.Model
             {
                 conn.Open();
 
-                DateTime currDate = DateTime.Now;
                 string sql = $"INSERT INTO users " +
                     $"(`username`, `password`, `first_name`, `last_name`, `date_of_creation`, `id_of_creator`, `date_of_last_change`, `last_id`) " +
                     $"VALUES ('{username}', '{password}', '{firstname}', '{lastname}', NOW(), '1', NOW(), '1')";
@@ -67,7 +66,6 @@ namespace ScaleFocus2.Model
             {
                 conn.Open();
 
-                DateTime currDate = DateTime.Now;
                 string sql = $"UPDATE `users` SET `username`='{username}',`password`='{password}',`first_name`='{firstname}',`last_name`='{lastname}',`date_of_last_change`=NOW(),`last_id`='0' WHERE id={id}";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
@@ -111,7 +109,10 @@ namespace ScaleFocus2.Model
 
             while (rdr.Read())
             {
-                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString(), rdr[8].ToString() };
+                DateTime dateCreate = DateTime.Parse(rdr[5].ToString());
+                DateTime dateUpdate = DateTime.Parse(rdr[7].ToString());
+                string sqldateUpdate = dateUpdate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), dateCreate.ToString(), rdr[6].ToString(), dateUpdate.ToString(), rdr[8].ToString() };
                 users.Add(all);
 
             }
@@ -131,7 +132,7 @@ namespace ScaleFocus2.Model
 
             while (rdr.Read())
             {
-                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString() };
+                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString() };
                 lists.Add(all);
 
             }
@@ -151,7 +152,9 @@ namespace ScaleFocus2.Model
                 MySqlDataReader rdr = cmd.ExecuteReader();
 
                 rdr.Read();
-                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString(), rdr[8].ToString() };
+                DateTime dateCreate = DateTime.Parse(rdr[5].ToString());
+                DateTime dateUpdate = DateTime.Parse(rdr[7].ToString());
+                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), dateCreate.ToString(), rdr[6].ToString(), dateUpdate.ToString(), rdr[8].ToString() };
 
 
                 rdr.Close();
@@ -185,8 +188,158 @@ namespace ScaleFocus2.Model
             }
         }
         public void addListId()
-        {//тут должна будет быть заявка которая проверяет строчки и если id_of_the_creator = user_id, то id = list_id
-            string sql = $"UPDATE `todolists` SET `list_id`=id WHERE id_of_the_creator=user_id";
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                string sql = $"UPDATE `todolists` SET `list_id`=`id` WHERE id_of_the_creator = user_id";
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+        public void shareList(string listId, string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"SELECT * FROM todolists " +
+                    $"WHERE id = {listId} AND user_id = id_of_the_creator";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Read();
+
+                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString() };
+
+                shareListInsert(all, userId);
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+        public void shareListInsert(string[] list, string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+
+                conn.Open();
+
+                DateTime dateCreate = DateTime.Parse(list[2]);
+                string sqldateCreate = dateCreate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                DateTime dateUpdate = DateTime.Parse(list[4]);
+                string sqldateUpdate = dateUpdate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+                string sql = $"INSERT INTO todolists " +
+                    $"(`title`, `date_of_creation`, `id_of_the_creator`, `date_of_last_change`, `last_id`, `user_id`, `list_id`) " +
+                    $"VALUES ('{list[1]}', '{sqldateCreate}', '{list[3]}', '{sqldateUpdate}', '{list[5]}', '{userId}', '{list[7]}')";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void RemoveAllLists(string listId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"DELETE FROM todolists " +
+                    $"WHERE list_id = '{listId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void RemoveOneList(string listId, string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"DELETE FROM todolists " +
+                    $"WHERE list_id = '{listId}' AND user_id = '{userId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void ChangeOneList(string listId, string title, string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"UPDATE todolists SET title='{title}' " +
+                    $"WHERE list_id = '{listId}' AND user_id = '{userId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void ChangeAllLists(string listId, string title)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"UPDATE todolists SET title='{title}' " +
+                    $"WHERE list_id = '{listId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

@@ -36,6 +36,7 @@ namespace ScaleFocus2.View
             this.tbx = new System.Windows.Forms.TextBox();
             this.titlelbl = new System.Windows.Forms.Label();
             this.enterBtn = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // deleteBtn
@@ -86,7 +87,7 @@ namespace ScaleFocus2.View
             // titlelbl
             // 
             this.titlelbl.AutoSize = true;
-            this.titlelbl.Location = new System.Drawing.Point(70, 79);
+            this.titlelbl.Location = new System.Drawing.Point(0, 79);
             this.titlelbl.Name = "titlelbl";
             this.titlelbl.Size = new System.Drawing.Size(30, 13);
             this.titlelbl.TabIndex = 5;
@@ -102,11 +103,19 @@ namespace ScaleFocus2.View
             this.enterBtn.UseVisualStyleBackColor = true;
             this.enterBtn.Click += new System.EventHandler(this.enterBtn_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(3, 95);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(169, 110);
+            this.panel1.TabIndex = 7;
+            // 
             // ToDoListMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(177, 207);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.enterBtn);
             this.Controls.Add(this.titlelbl);
             this.Controls.Add(this.tbx);
@@ -131,5 +140,6 @@ namespace ScaleFocus2.View
         private System.Windows.Forms.TextBox tbx;
         private System.Windows.Forms.Label titlelbl;
         private System.Windows.Forms.Button enterBtn;
+        private System.Windows.Forms.Panel panel1;
     }
 }

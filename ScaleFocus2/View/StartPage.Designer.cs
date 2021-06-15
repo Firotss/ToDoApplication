@@ -57,13 +57,16 @@ namespace ScaleFocus2
             // passwordTbx
             // 
             this.passwordTbx.Location = new System.Drawing.Point(70, 38);
+            this.passwordTbx.MaxLength = 50;
             this.passwordTbx.Name = "passwordTbx";
+            this.passwordTbx.PasswordChar = '*';
             this.passwordTbx.Size = new System.Drawing.Size(100, 20);
             this.passwordTbx.TabIndex = 7;
             // 
             // usernameTbx
             // 
             this.usernameTbx.Location = new System.Drawing.Point(70, 12);
+            this.usernameTbx.MaxLength = 14;
             this.usernameTbx.Name = "usernameTbx";
             this.usernameTbx.Size = new System.Drawing.Size(100, 20);
             this.usernameTbx.TabIndex = 6;

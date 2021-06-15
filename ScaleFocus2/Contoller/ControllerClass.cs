@@ -10,6 +10,7 @@ namespace ScaleFocus2.Contoller
 {
     class ControllerClass : IController
     {
+        Connector connector = new Connector();
         public string userType(string username, string password)
         {
             Connector connector = new Connector();
@@ -33,38 +34,51 @@ namespace ScaleFocus2.Contoller
         }
         public void addUser(string firstname, string lastname, string password, string username)
         {
-            Connector connector = new Connector();
             connector.addUser(firstname, lastname, password, username);
         }
         public void updateUser(string id, string firstname, string lastname, string password, string username)
         {
-            Connector connector = new Connector();
             connector.updateUser(id, firstname, lastname, password, username);
         }
         public void deleteUser(string id)
         {
-            Connector connector = new Connector();
             connector.deleteUser(id);
         }
         public List<string[]> AllUsers()
         {
-            Connector connector = new Connector();
             return connector.AllUsers();
         }
         public List<string[]> AllLists(string id)
         {
-            Connector connector = new Connector();
             return connector.AllLists(id.ToString());
         }
         public string[] OneUser(string username)
         {
-            Connector connector = new Connector();
-            return connector.OneUser(username); 
+            return connector.OneUser(username);
         }
         public void addList(string title, string id)
         {
-            Connector connector = new Connector();
             connector.addList(title, id);
+        }
+        public void shareList(string listId, string userId)
+        {
+            connector.shareList(listId, userId);
+        }
+        public void RemoveOneList(string listId, string userId)
+        {
+            this.connector.RemoveOneList(listId, userId);
+        }
+        public void RemoveAllLists(string listId)
+        {
+            this.connector.RemoveAllLists(listId);
+        }
+        public void ChangeAllLists(string listId, string title)
+        {
+            this.connector.ChangeAllLists(listId, title);
+        }
+        public void ChangeOneList(string listId, string title, string userId)
+        {
+            this.connector.ChangeOneList(listId, title, userId);
         }
     }
 }

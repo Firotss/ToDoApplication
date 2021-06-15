@@ -91,7 +91,6 @@
   <ItemGroup>
     <Compile Include="Contoller\ControllerClass.cs" />
     <Compile Include="Model\Connector.cs" />
-    <Compile Include="Model\Users.cs" />
     <Compile Include="View\AdminMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,7 +98,6 @@
       <DependentUpon>AdminMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="View\IController.cs" />
-    <Compile Include="View\IUsers.cs" />
     <Compile Include="View\StartPage.cs">
       <SubType>Form</SubType>
     </Compile>
