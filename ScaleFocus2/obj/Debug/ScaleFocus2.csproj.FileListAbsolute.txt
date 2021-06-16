@@ -34,3 +34,4 @@ C:\Users\AO2\source\repos\ScaleFocus2\ScaleFocus2\obj\Debug\ScaleFocus2.csproj.C
 C:\Users\AO2\source\repos\ScaleFocus2\ScaleFocus2\obj\Debug\ScaleFocus2.View.AdminMenu.resources
 C:\Users\AO2\source\repos\ScaleFocus2\ScaleFocus2\obj\Debug\ScaleFocus2.View.UserMenu.resources
 C:\Users\AO2\source\repos\ScaleFocus2\ScaleFocus2\obj\Debug\ScaleFocus2.View.ToDoListMenu.resources
+C:\Users\AO2\source\repos\ScaleFocus2\ScaleFocus2\obj\Debug\ScaleFocus2.View.TaskForm.resources

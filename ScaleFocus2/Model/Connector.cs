@@ -32,7 +32,7 @@ namespace ScaleFocus2.Model
                 conn.Close();
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -73,7 +73,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -92,7 +92,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -161,7 +161,7 @@ namespace ScaleFocus2.Model
                 conn.Close();
                 return all;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -182,7 +182,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -201,7 +201,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -228,7 +228,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -256,7 +256,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -276,7 +276,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -296,7 +296,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -308,7 +308,7 @@ namespace ScaleFocus2.Model
                 MySqlConnection conn = new MySqlConnection(connStr);
                 conn.Open();
 
-                string sql = $"UPDATE todolists SET title='{title}' " +
+                string sql = $"UPDATE todolists SET title='{title}', last_id = user_id, date_of_last_change = NOW()" +
                     $"WHERE list_id = '{listId}' AND user_id = '{userId}'";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
@@ -316,7 +316,7 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -328,7 +328,7 @@ namespace ScaleFocus2.Model
                 MySqlConnection conn = new MySqlConnection(connStr);
                 conn.Open();
 
-                string sql = $"UPDATE todolists SET title='{title}' " +
+                string sql = $"UPDATE todolists SET title='{title}', last_id = user_id, date_of_last_change = NOW()" +
                     $"WHERE list_id = '{listId}'";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
@@ -336,7 +336,133 @@ namespace ScaleFocus2.Model
                 rdr.Close();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+
+            }
+        }
+        public List<string[]> AllTasks(string id_of_the_list)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"SELECT * FROM todotasks WHERE id_of_the_list = '{id_of_the_list}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                List<string[]> tasks = new List<string[]>();
+
+                while (rdr.Read())
+                {
+                    string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString(), rdr[8].ToString() };
+                    tasks.Add(all);
+                }
+                rdr.Close();
+                conn.Close();
+                return tasks;
+            }
+            catch(Exception)
+            {
+
+            }
+            return null;
+        }
+        public void AddTask(string listId, string title, string userId)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"INSERT INTO todotasks " +
+                    $"(`id_of_the_list` ,`title`, `isComplete`, `date_of_creation`, `id_of_creator`, `date_of_last_change`, `last_id`) " +
+                    $"VALUES ('{listId}', '{title}', '0', NOW(), '{userId}', NOW(), '{userId}')";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                UpdateList(listId, userId);
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void UpdateList(string listId, string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                string sql = $"UPDATE `todolists` SET `last_id`='{userId}', `date_of_last_change`= NOW() WHERE list_id = '{listId}'";
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void UpdateTask(string taskId, string title, string description, string userId, string listId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+
+                string sql = $"UPDATE `todotasks` SET `last_id`='{userId}', `date_of_last_change`= NOW(), `title` = '{title}', `description`='{description}' WHERE id = '{taskId}'";
+                conn.Open();
+                
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                UpdateList(listId, userId);
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void DeleteTask(string id)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"DELETE FROM todotasks WHERE id = {id}";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        public void UpdateCheck(string check, string id)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"UPDATE todotasks SET isComplete={check} WHERE id={id}";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
             {
 
             }

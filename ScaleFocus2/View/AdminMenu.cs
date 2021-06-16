@@ -35,11 +35,11 @@ namespace ScaleFocus2.View
 
             if(choice == 1)
             {
-                controller.addUser(firstnameTxb.Text, lastnameTxb.Text, PasswordTxb.Text, usernameTxb.Text);
+                controller.addUser(firstnameTxb.Text, lastnameTxb.Text, PasswordTxb.Text, (usernameTxb.Text).ToLower());
             }
             else if(choice == 2)
             {
-                controller.updateUser(idTxb.Text, firstnameTxb.Text, lastnameTxb.Text, PasswordTxb.Text, usernameTxb.Text);
+                controller.updateUser(idTxb.Text, firstnameTxb.Text, lastnameTxb.Text, PasswordTxb.Text, (usernameTxb.Text).ToLower());
             }
             else if(choice == 3)
             {
@@ -66,20 +66,16 @@ namespace ScaleFocus2.View
 
             EnterBtn.Visible = true;
 
+            createBtn.BackColor = Color.DimGray;
+            DeleteBtn.BackColor = Color.FromArgb(207, 207, 207);
+            editBtn.BackColor = Color.FromArgb(207, 207, 207);
             createBtn.Enabled = false;
             DeleteBtn.Enabled = true;
             editBtn.Enabled = true;
 
             idTxb.Visible = false;
             IDlbl.Visible = false;
-            usernameLbl.Visible = true;
-            usernameTxb.Visible = true;
-            passwordLbl.Visible = true;
-            PasswordTxb.Visible = true;
-            firstnameLbl.Visible = true;
-            firstnameTxb.Visible = true;
-            lastnameTxb.Visible = true;
-            lasynameLbl.Visible = true;
+            on();
         }
 
         private void editBtn_Click(object sender, EventArgs e)
@@ -88,20 +84,16 @@ namespace ScaleFocus2.View
 
             EnterBtn.Visible = true;
 
+            editBtn.BackColor = Color.DimGray;
+            DeleteBtn.BackColor = Color.FromArgb(207, 207, 207);
+            createBtn.BackColor = Color.FromArgb(207, 207, 207);
             editBtn.Enabled = false;
             createBtn.Enabled = true;
             DeleteBtn.Enabled = true;
 
             idTxb.Visible = true;
             IDlbl.Visible = true;
-            usernameLbl.Visible = true;
-            usernameTxb.Visible = true;
-            passwordLbl.Visible = true;
-            PasswordTxb.Visible = true;
-            firstnameLbl.Visible = true;
-            firstnameTxb.Visible = true;
-            lastnameTxb.Visible = true;
-            lasynameLbl.Visible = true;
+            on();
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
@@ -111,6 +103,10 @@ namespace ScaleFocus2.View
 
             EnterBtn.Visible = true;
 
+
+            DeleteBtn.BackColor = Color.DimGray;
+            editBtn.BackColor = Color.FromArgb(207, 207, 207);
+            createBtn.BackColor = Color.FromArgb(207, 207, 207);
             DeleteBtn.Enabled = false;
             createBtn.Enabled = true;
             editBtn.Enabled = true;
@@ -119,9 +115,24 @@ namespace ScaleFocus2.View
             idTxb.Visible = true;
 
         }
-
+        private void on()
+        {
+            usernameLbl.Visible = true;
+            usernameTxb.Visible = true;
+            passwordLbl.Visible = true;
+            PasswordTxb.Visible = true;
+            firstnameLbl.Visible = true;
+            firstnameTxb.Visible = true;
+            lastnameTxb.Visible = true;
+            lasynameLbl.Visible = true;
+        }
         private void off()
         {
+            usernameTxb.Text = "";
+            firstnameTxb.Text = "";
+            lastnameTxb.Text = "";
+            PasswordTxb.Text = "";
+            idTxb.Text = "";
             EnterBtn.Visible = false;
             idTxb.Visible = false;
             IDlbl.Visible = false;
@@ -133,6 +144,50 @@ namespace ScaleFocus2.View
             firstnameTxb.Visible = false;
             lastnameTxb.Visible = false;
             lasynameLbl.Visible = false;
+        }
+
+        private void closeBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        bool mouseDown = false;
+        Point startMousePos;
+        private void topMenu_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            startMousePos = e.Location;
+        }
+
+        private void topMenu_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((this.Location.X - startMousePos.X) + e.X, (this.Location.Y - startMousePos.Y) + e.Y);
+            }
+        }
+
+        private void topMenu_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void topLbl_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            startMousePos = e.Location;
+        }
+
+        private void topLbl_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((this.Location.X - startMousePos.X) + e.X, (this.Location.Y - startMousePos.Y) + e.Y);
+            }
+        }
+
+        private void topLbl_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
         }
     }
 }

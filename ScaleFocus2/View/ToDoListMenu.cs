@@ -16,13 +16,18 @@ namespace ScaleFocus2.View
         string user_id;
         string[] list_info;
         IController controller;
+        string listId;
+        List<string[]> tasks;
         public ToDoListMenu(string user_id, string[] id)
         {
             InitializeComponent();
             this.user_id = user_id;
             this.list_info = id;
-            titlelbl.Text = id[1];
+            topLbl.Text = id[1];
+            listId = id[7];
             tbx.Enabled = false;
+            enterBtn.Enabled = false;
+            PrintApplications();
         }
         int choice = 0;
         private void deleteBtn_Click(object sender, EventArgs e)
@@ -47,7 +52,15 @@ namespace ScaleFocus2.View
 
             if(choice == 1)
             {
-                controller.shareList(list_info[7], tbx.Text);
+                List<string[]> users = controller.AllUsers();
+                foreach (var item in users)
+                {
+                    if(item[1] == (tbx.Text).ToLower())
+                    {
+                        controller.shareList(list_info[7], item[0]);
+                    }
+                }
+                
             }
             else if(choice == 2)
             {
@@ -59,9 +72,12 @@ namespace ScaleFocus2.View
                 {
                     controller.ChangeOneList(list_info[7], tbx.Text, user_id);
                 }
-                titlelbl.Text = tbx.Text;
+                topLbl.Text = tbx.Text;
             }
-
+            else if(choice == 3)
+            {
+                controller.AddTask(list_info[7], tbx.Text, user_id);
+            }
             choice = 0;
 
             enterBtn.Enabled = false;
@@ -84,7 +100,132 @@ namespace ScaleFocus2.View
             enterBtn.Enabled = true;
             tbx.Enabled = true;
             lbl.Text = "Edit with title:";
-            tbx.Text = titlelbl.Text;
+            tbx.Text = topLbl.Text;
+        }
+
+        private void closeBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        bool mouseDown = false;
+        Point startMousePos;
+        private void topMenu_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            startMousePos = e.Location;
+        }
+
+        private void topMenu_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((this.Location.X - startMousePos.X) + e.X, (this.Location.Y - startMousePos.Y) + e.Y);
+            }
+        }
+
+        private void topMenu_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void topLbl_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            startMousePos = e.Location;
+        }
+
+        private void topLbl_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((this.Location.X - startMousePos.X) + e.X, (this.Location.Y - startMousePos.Y) + e.Y);
+            }
+        }
+
+        private void topLbl_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+        private void PrintApplications()
+        {
+            this.controller = new ControllerClass();
+            this.tasks = controller.AllTasks(listId);
+            ToDoTasksPanel.Controls.Clear();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                CheckBox checkBox = new CheckBox();
+                checkBox.Name = "checkbox" + i;
+                int z = ((i) * 35) + 10;
+                checkBox.Width = 25;
+                checkBox.Location = new Point(0, z);
+                checkBox.Text = tasks[i][2];
+                checkBox.Width = 100;
+                
+                checkBox.ForeColor = Color.FromKnownColor(KnownColor.ControlLightLight);
+                if (tasks[i][4] == "True")
+                {
+                    checkBox.Checked = true;
+                }
+                else
+                {
+                    checkBox.Checked = false; 
+                }
+
+                ToDoTasksPanel.Controls.Add(checkBox);
+
+
+                
+
+                Button button = new Button();
+                button.Name = (i).ToString();
+                int y = ((i) * 35) + 10;
+                button.Location = new Point(117, y);
+                button.Text = ">";
+                button.BackColor = Color.FromArgb(207, 207, 207);
+                button.FlatAppearance.BorderSize = 0;
+                button.Width = 30;
+                button.FlatAppearance.MouseDownBackColor = Color.FromKnownColor(KnownColor.PaleGreen);
+                button.FlatAppearance.MouseOverBackColor = Color.FromKnownColor(KnownColor.PaleGreen);
+                button.FlatStyle = FlatStyle.Flat;
+                ToDoTasksPanel.Controls.Add(button);
+                checkBox.CheckedChanged += (s, em) => UpdateCheck(checkBox.Checked, tasks[int.Parse(button.Name)]);
+                button.Click += (s, em) => ShowMethod(tasks[int.Parse(button.Name)]);
+            }
+        }
+        private void UpdateCheck(bool check, string[] task_info)
+        {
+            this.controller = new ControllerClass();
+            if(check == true)
+            {
+                controller.UpdateCheck("1", task_info[0]);
+            }
+            else if(check == false)
+            {
+                controller.UpdateCheck("0", task_info[0]);
+            }
+        }
+        private void ShowMethod(string[] task_info)
+        {
+            TaskForm taskForm = new TaskForm(task_info[2], task_info[3], task_info[0], user_id, listId);
+            taskForm.ShowDialog();
+            PrintApplications();
+        }
+
+        private void taskBtn_Click(object sender, EventArgs e)
+        {
+            choice = 3;
+            enterBtn.Enabled = true;
+            tbx.Enabled = true;
+            lbl.Text = "Enter title:";
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            this.controller = new ControllerClass();
+            if (controller.AllTasks(listId).Count != tasks.Count)
+            {
+                PrintApplications();
+            }
         }
     }
 }

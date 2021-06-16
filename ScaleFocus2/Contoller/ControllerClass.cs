@@ -80,5 +80,25 @@ namespace ScaleFocus2.Contoller
         {
             this.connector.ChangeOneList(listId, title, userId);
         }
+        public List<string[]> AllTasks(string id_of_the_list)
+        {
+            return connector.AllTasks(id_of_the_list);
+        }
+        public void AddTask(string listId, string title, string userId)
+        {
+            this.connector.AddTask(listId, title, userId);
+        }
+        public void UpdateTask(string taskId, string title, string description, string userId, string listId)
+        {
+            this.connector.UpdateTask(taskId, title, description, userId, listId);
+        }
+        public void DeleteTask(string id)
+        {
+            this.connector.DeleteTask(id);
+        }
+        public void UpdateCheck(string check, string id)
+        {
+            this.connector.UpdateCheck(check, id);
+        }
     }
 }
