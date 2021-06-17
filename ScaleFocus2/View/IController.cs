@@ -26,5 +26,11 @@ namespace ScaleFocus2.View
         void UpdateTask(string taskId, string title, string description, string userId, string listId);
         void DeleteTask(string id);
         void UpdateCheck(string check, string id);
+        string[] loadUsers(string userId);
+        List<string[]> allUsersLists(string listId);
+        List<string[]> allUsersNeedToDo(string taskId);
+        void AddUsersNeedToDo(string taskId, string userId);
+        void DeleteUsersNeedToDo(string taskId, string userId);
+        string GetListId(string id);
     }
 }

@@ -100,5 +100,29 @@ namespace ScaleFocus2.Contoller
         {
             this.connector.UpdateCheck(check, id);
         }
+        public string[] loadUsers(string userId)
+        {
+            return this.connector.loadUsers(userId);
+        }
+        public List<string[]> allUsersLists(string listId)
+        {
+            return this.connector.allUsersLists(listId);
+        }
+        public List<string[]> allUsersNeedToDo(string taskId)
+        {
+            return connector.allUsersNeedToDo(taskId);
+        }
+        public void AddUsersNeedToDo(string taskId, string userId)
+        {
+            connector.AddUsersNeedToDo(taskId, userId);
+        }
+        public void DeleteUsersNeedToDo(string taskId, string userId)
+        {
+            connector.DeleteUsersNeedToDo(taskId, userId);
+        }
+        public string GetListId(string id)
+        {
+            return connector.GetListId(id);
+        }
     }
 }

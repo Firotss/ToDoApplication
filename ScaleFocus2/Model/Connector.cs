@@ -355,7 +355,9 @@ namespace ScaleFocus2.Model
 
                 while (rdr.Read())
                 {
-                    string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString(), rdr[8].ToString() };
+                    DateTime dateCreate = DateTime.Parse(rdr[5].ToString());
+                    DateTime dateUpdate = DateTime.Parse(rdr[7].ToString());
+                    string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), dateCreate.ToString(), rdr[6].ToString(), dateUpdate.ToString(), rdr[8].ToString() };
                     tasks.Add(all);
                 }
                 rdr.Close();
@@ -466,6 +468,148 @@ namespace ScaleFocus2.Model
             {
 
             }
+        }
+        public string[] loadUsers(string userId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"SELECT * FROM users WHERE `id` = '{userId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                List<string[]> users = new List<string[]>();
+                rdr.Read();
+
+                string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString(), rdr[8].ToString() };
+
+                rdr.Close();
+                conn.Close();
+                return all;
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
+        }
+        public List<string[]> allUsersLists(string listId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"SELECT * FROM todolists WHERE `list_id` = '{listId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                List<string[]> lists = new List<string[]>();
+
+                while (rdr.Read())
+                {
+                    string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), rdr[4].ToString(), rdr[5].ToString(), rdr[6].ToString(), rdr[7].ToString() };
+                    lists.Add(all);
+                }
+                rdr.Close();
+                conn.Close();
+                return lists;
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
+        }
+        public List<string[]> allUsersNeedToDo(string taskId)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connStr);
+                conn.Open();
+
+                string sql = $"SELECT * FROM usersneedtodo WHERE `id_of_the_task` = '{taskId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                List<string[]> users = new List<string[]>();
+
+                while (rdr.Read())
+                {
+                    string[] all = { rdr[0].ToString(), rdr[1].ToString(), rdr[2].ToString() };
+                    users.Add(all);
+                }
+                rdr.Close();
+                conn.Close();
+                return users;
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
+        }
+        public void AddUsersNeedToDo(string taskId, string userId)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"INSERT INTO usersneedtodo " +
+                    $"(`id_of_the_task` ,`user_id`) " +
+                    $"VALUES ('{taskId}', '{userId}')";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void DeleteUsersNeedToDo(string taskId, string userId)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"DELETE FROM usersneedtodo WHERE id_of_the_task = '{taskId}' AND user_id = '{userId}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                rdr.Close();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public string GetListId(string id)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+
+                string sql = $"SELECT id_of_the_list FROM todotasks WHERE id='{id}'";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
+                string listId = rdr.ToString();
+
+                rdr.Close();
+                conn.Close();
+                return listId;
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
         }
     }
 }

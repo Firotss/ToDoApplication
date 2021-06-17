@@ -23,23 +23,110 @@ namespace ScaleFocus2
         private void loginBtn_Click(object sender, EventArgs e)
         {
             this.controller = new ControllerClass();
-            string check = controller.userType((usernameTbx.Text).ToLower(), passwordTbx.Text);
-            if (check == "admin")
+            try
             {
-                errorLbl.Text = "";
-                AdminMenu adminMenu = new AdminMenu();
-                adminMenu.Show();
+                string[] console = (usernameTbx.Text).Split();
+                if (console[1] == "console")
+                {
+                    string checkConsole = controller.userType((console[0]).ToLower(), passwordTbx.Text);
+                    string[] userInfo = controller.OneUser(console[0]);
+                    passwordTbx.Text = "";
+                    usernameTbx.Text = "";
+                    if(NativeMethods.AllocConsole())
+                    {
+                        IntPtr stdHandle = NativeMethods.GetStdHandle(NativeMethods.STD_OUTPUT_HANDLE);
+                        string[] command = Console.ReadLine().Split();
+                        while (command != null)
+                        {
+                            string id;
+                            switch (command[0])
+                            {
+                                case "allTasks":
+                                    List<string[]> tasks = controller.AllTasks(command[1]);
+                                    foreach (var item in tasks)
+                                    {
+                                        Console.WriteLine($"{item[0]} - {item[1]} - {item[2]} - {item[3]} - {item[4]} - {item[5]} - {item[6]} - {item[7]} - {item[8]}");
+                                    }
+                                    break;
+                                case "createTasks":
+                                    controller.AddTask(command[1], command[2], userInfo[0]);
+                                    Console.WriteLine("Tasks succesfully added!");
+                                    break;
+                                case "deleteTasks":
+                                    controller.DeleteTask(command[1]);
+                                    Console.WriteLine("Tasks succesfully deleted!");
+                                    break;
+                                case "updateTasks":
+                                    string listId = controller.GetListId(command[0]);
+                                    controller.UpdateTask(command[1], command[2], command[3], userInfo[0], listId);
+                                    Console.WriteLine("Tasks succesfully updated!");
+                                    break;
+                                case "todo":
+                                    id = command[1];
+                                    command[1] = "todo";
+                                    foreach (var item in command)
+                                    {
+                                        if(item == "todo")
+                                        {
+                                            continue;
+                                        }
+                                        controller.AddUsersNeedToDo(id, item);
+                                    }
+                                    Console.WriteLine("ToDo task added to another user! :D");
+                                    break;
+                                case "todoRemove":
+                                    id = command[1];
+                                    command[1] = "todo";
+                                    foreach (var item in command)
+                                    {
+                                        if (item == "todo")
+                                        {
+                                            continue;
+                                        }
+                                        controller.DeleteUsersNeedToDo(id, item);
+                                    }
+                                    Console.WriteLine("ToDo task removed from another user!");
+                                    break;
+                                case "taskComplete":
+                                    controller.UpdateCheck("1", command[1]);
+                                    Console.WriteLine("Task completed!1!!");
+                                    break;
+                            }
+                            command = Console.ReadLine().Split();
+                        }
+                        this.Close();
+                    }
+                }
             }
-            else if(check == "user")
+            catch (Exception)
             {
-                errorLbl.Text = "";
-                UserMenu user_Menu = new UserMenu((usernameTbx.Text).ToLower());
-                user_Menu.Show();
+                string check = controller.userType((usernameTbx.Text).ToLower(), passwordTbx.Text);
+                if (check == "admin")
+                {
+                    errorLbl.Text = "";
+                    AdminMenu adminMenu = new AdminMenu();
+                    adminMenu.Show();
+                }
+                else if (check == "user")
+                {
+                    errorLbl.Text = "";
+                    UserMenu user_Menu = new UserMenu((usernameTbx.Text).ToLower());
+                    user_Menu.Show();
+                }
+                else
+                {
+                    errorLbl.Text = "Incorrect login or password!";
+                }
             }
-            else
-            {
-                errorLbl.Text = "Incorrect login or password!";
-            }
+        }
+        public partial class NativeMethods
+        {
+            public static Int32 STD_OUTPUT_HANDLE = -11;
+            [System.Runtime.InteropServices.DllImportAttribute("kernel32.dll", EntryPoint = "GetStdHandle")]
+            public static extern System.IntPtr GetStdHandle(Int32 nStdHandle);
+            [System.Runtime.InteropServices.DllImportAttribute("kernel32.dll", EntryPoint = "AllocConsole")]
+            [return: System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)]
+            public static extern bool AllocConsole();
         }
         bool mouseDown = false;//нужно е за преместване
         Point startMousePos;

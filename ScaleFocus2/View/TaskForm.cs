@@ -25,8 +25,49 @@ namespace ScaleFocus2.View
             this.taskId = taskId;
             this.userId = userId;
             this.listId = listId;
+            loadUsers();
         }
+        private void loadUsers()
+        {
+            this.controller = new ControllerClass();
+            List<string[]> lists = controller.allUsersLists(listId);
 
+            for (int i = 0; i < lists.Count; i++)
+            {
+                string[] users = controller.loadUsers(lists[i][6]);
+                Label label = new Label();
+                int z = ((i) * 25) + 5;
+                label.Text = users[1];
+                label.Location = new Point(0, z);
+                label.ForeColor = Color.FromKnownColor(KnownColor.ControlLightLight);
+                List<string[]> usersToDo = controller.allUsersNeedToDo(taskId);
+                if (usersToDo != null)
+                {
+                    for (int x = 0; x < usersToDo.Count; x++)
+                    {
+                        if (usersToDo[x][2] == users[0])
+                        {
+                            label.BackColor = Color.Green;
+                        }
+                    }
+                }
+                usersPanel.Controls.Add(label);
+                label.Click += (s, em) =>
+                {
+                    if (label.BackColor == Color.Green)
+                    {
+                        label.BackColor = Color.Transparent;
+                        controller.DeleteUsersNeedToDo(taskId, users[0]);
+                    }
+                    else
+                    {
+                        label.BackColor = Color.Green;
+                        controller.AddUsersNeedToDo(taskId, users[0]);
+                    }
+
+                };
+            }
+        }
         private void closeBtn_Click(object sender, EventArgs e)
         {
             this.Close();

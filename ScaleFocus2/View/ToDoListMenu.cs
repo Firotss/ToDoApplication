@@ -150,6 +150,7 @@ namespace ScaleFocus2.View
         {
             this.controller = new ControllerClass();
             this.tasks = controller.AllTasks(listId);
+            
             ToDoTasksPanel.Controls.Clear();
             for (int i = 0; i < tasks.Count; i++)
             {
@@ -160,7 +161,17 @@ namespace ScaleFocus2.View
                 checkBox.Location = new Point(0, z);
                 checkBox.Text = tasks[i][2];
                 checkBox.Width = 100;
-                
+                List<string[]> usersToDo = controller.allUsersNeedToDo(tasks[i][0]);
+                if(usersToDo != null)
+                {
+                    for (int x = 0; x < usersToDo.Count; x++)
+                    {
+                        if(usersToDo[x][2] == user_id)
+                        {
+                            checkBox.BackColor = Color.FromKnownColor(KnownColor.Green);
+                        }
+                    }
+                }
                 checkBox.ForeColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                 if (tasks[i][4] == "True")
                 {
@@ -170,7 +181,7 @@ namespace ScaleFocus2.View
                 {
                     checkBox.Checked = false; 
                 }
-
+                
                 ToDoTasksPanel.Controls.Add(checkBox);
 
 
@@ -222,9 +233,13 @@ namespace ScaleFocus2.View
         private void updateTimer_Tick(object sender, EventArgs e)
         {
             this.controller = new ControllerClass();
-            if (controller.AllTasks(listId).Count != tasks.Count)
+            List<string[]> newTasks = controller.AllTasks(listId);
+            if(newTasks != null)
             {
-                PrintApplications();
+                if (newTasks.Count() != tasks.Count)
+                {
+                    PrintApplications();
+                }
             }
         }
     }

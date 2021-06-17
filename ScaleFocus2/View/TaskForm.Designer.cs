@@ -36,6 +36,8 @@ namespace ScaleFocus2.View
             this.topMenu = new System.Windows.Forms.Panel();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.deleteBtn = new System.Windows.Forms.Button();
+            this.usersPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // descriptionTxb
@@ -61,7 +63,7 @@ namespace ScaleFocus2.View
             this.closeBtn.FlatAppearance.BorderSize = 0;
             this.closeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.closeBtn.Location = new System.Drawing.Point(150, 7);
+            this.closeBtn.Location = new System.Drawing.Point(214, 7);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(13, 13);
             this.closeBtn.TabIndex = 14;
@@ -73,7 +75,7 @@ namespace ScaleFocus2.View
             this.topMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
             this.topMenu.Location = new System.Drawing.Point(-1, -2);
             this.topMenu.Name = "topMenu";
-            this.topMenu.Size = new System.Drawing.Size(164, 24);
+            this.topMenu.Size = new System.Drawing.Size(236, 24);
             this.topMenu.TabIndex = 16;
             this.topMenu.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topMenu_MouseDown);
             this.topMenu.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topMenu_MouseMove);
@@ -100,12 +102,31 @@ namespace ScaleFocus2.View
             this.deleteBtn.UseVisualStyleBackColor = false;
             this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
+            // usersPanel
+            // 
+            this.usersPanel.Location = new System.Drawing.Point(158, 45);
+            this.usersPanel.Name = "usersPanel";
+            this.usersPanel.Size = new System.Drawing.Size(64, 133);
+            this.usersPanel.TabIndex = 18;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(158, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Users:";
+            // 
             // TaskForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(40)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(164, 222);
+            this.ClientSize = new System.Drawing.Size(231, 222);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.usersPanel);
             this.Controls.Add(this.deleteBtn);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.titleTxb);
@@ -127,5 +148,7 @@ namespace ScaleFocus2.View
         private System.Windows.Forms.Panel topMenu;
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.Button deleteBtn;
+        private System.Windows.Forms.Panel usersPanel;
+        private System.Windows.Forms.Label label1;
     }
 }
